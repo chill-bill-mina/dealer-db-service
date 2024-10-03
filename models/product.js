@@ -10,7 +10,6 @@ const productSchema = new Schema(
     productId: {
       type: String,
       required: true,
-      unique: true,
     },
     productSerie: {
       type: String,

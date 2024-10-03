@@ -14,6 +14,7 @@ const adminAuthRoutes = require("./routes/admin/auth");
 const userPurchaseRoutes = require("./routes/user/purchase");
 const adminPurchaseRoutes = require("./routes/admin/purchase");
 const userProductRoutes = require("./routes/user/product");
+const adminProductRoutes = require("./routes/admin/product");
 const app = express();
 
 app.use(bodyParser.json({ limit: "20mb" }));
@@ -45,6 +46,7 @@ app.use("/admin", adminAuthRoutes);
 app.use("/user", userPurchaseRoutes);
 app.use("/admin", adminPurchaseRoutes);
 app.use("/user", userProductRoutes);
+app.use("/admin", adminProductRoutes);
 
 app.use((error, req, res, next) => {
   const cleanedMessage = error.message.replace(/\\x1b\[\d+m/g, "");
