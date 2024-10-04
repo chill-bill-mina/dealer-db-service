@@ -13,7 +13,6 @@ exports.getNonce = async (req, res, next) => {
   const admin = await Admin.findOne({ address });
 
   if (!admin) {
-    // Eğer admin veritabanında yoksa, erişim izni vermiyoruz
     return res.status(403).send("Access denied");
   }
 
@@ -29,10 +28,8 @@ exports.verify = async (req, res, next) => {
   const admin = await Admin.findOne({ address });
   if (!admin) return res.status(403).send("Access denied");
 
-  const msg = `Nonce: ${admin.nonce}`;
-
   const verifyBody = {
-    data: msg,
+    data: admin.nonce,
     publicKey: address,
     signature: signature,
   };
