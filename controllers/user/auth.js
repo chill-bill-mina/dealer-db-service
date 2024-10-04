@@ -29,10 +29,8 @@ exports.verify = async (req, res, next) => {
   const user = await User.findOne({ address });
   if (!user) return res.status(400).send("User not found");
 
-  const msg = `Nonce: ${user.nonce}`;
-
   const verifyBody = {
-    data: msg, // Signature content that needs to be verified.
+    data: user.nonce, // Signature content that needs to be verified.
     publicKey: address, // Public key that needs to be verified.
     signature: signature, // Signature results that need to be verified.
   };
