@@ -1,5 +1,5 @@
 const Purchase = require("../../models/purchase");
-
+const Product = require("../../models/product");
 exports.getMyProducts = async (req, res) => {
   const userAddress = req.user.address;
 
