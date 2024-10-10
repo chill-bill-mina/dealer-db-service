@@ -5,7 +5,7 @@ exports.buy = async (req, res) => {
   const buyerAddress = req.user.address;
 
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.find(productId);
     if (!product) return res.status(404).send("Product couldn't find");
 
     const purchase = new Purchase({
