@@ -1,11 +1,19 @@
-const Product = require("../../models/product");
+const Purchase = require("../../models/purchase");
 
 exports.getMyProducts = async (req, res) => {
   const userAddress = req.user.address;
 
   try {
-    const products = await Product.find({ owner: userAddress });
-    res.json(products);
+    const purchases = await Purchase.find({ buyer: userAddress }).populate(
+      "product"
+    );
+    const result = purchases.map((purchase) => ({
+      product: purchase.product,
+      status: purchase.status,
+      quantity: purchase.quantity,
+    }));
+
+    res.json(result);
   } catch (err) {
     console.error("Error while retrieving user's products:", err);
     if (!error.statusCode) {
