@@ -11,6 +11,8 @@ const purchaseSchema = new Schema({
   phoneNumber: { type: String, required: true },
   quantity: { type: Number, default: 1 },
   invoiceNumber: { type: String },
+  transactionHash: { type: String },
+  isDeployed: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Purchase", purchaseSchema);

@@ -14,4 +14,6 @@ router.post(
   purchaseController.approvePurchase
 );
 
+router.post("/transaction/:purchaseId", purchaseController.setTransactionHash);
+
 module.exports = router;

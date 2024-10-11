@@ -16,7 +16,7 @@ const adminPurchaseRoutes = require("./routes/admin/purchase");
 const userProductRoutes = require("./routes/user/product");
 const adminProductRoutes = require("./routes/admin/product");
 const app = express();
-
+const schedule = require("./schedule");
 app.use(bodyParser.json({ limit: "20mb" }));
 
 //CORS Policy

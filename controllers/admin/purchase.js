@@ -38,6 +38,27 @@ exports.getPendingPurchases = async (req, res) => {
   }
 };
 
+exports.setTransactionHash = async (req, res) => {
+  const purchaseId = req.params.purchaseId;
+  const { transactionHash } = req.body;
+
+  try {
+    const purchase = await Purchase.findById(purchaseId);
+    if (!purchase) return res.status(404).send("No purchase found");
+
+    purchase.transactionHash = transactionHash;
+    await purchase.save();
+
+    res.json({ message: "Transaction hash saved" });
+  } catch (err) {
+    console.error("Error while saving transaction hash:", err);
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
+};
+
 exports.approvePurchase = async (req, res) => {
   const purchaseId = req.params.id;
   const { contractAddress } = req.body;
