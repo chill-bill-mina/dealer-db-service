@@ -25,6 +25,7 @@ exports.getPendingPurchases = async (req, res) => {
         discountAmount: product.discountAmount || 0,
         quantity: purchase.quantity || 1,
         invoiceNumber: purchase.invoiceNumber || "",
+        contractDetails: purchase.contractDetails,
       };
     });
 
@@ -38,7 +39,29 @@ exports.getPendingPurchases = async (req, res) => {
   }
 };
 
-exports.setTransactionHash = async (req, res) => {
+exports.setDeployment = async (req, res) => {
+  const purchaseId = req.params.purchaseId;
+  const { transactionHash, contractAddress } = req.body;
+
+  try {
+    const purchase = await Purchase.findById(purchaseId);
+    if (!purchase) return res.status(404).send("No purchase found");
+
+    purchase.contractDetails.deploy.transactionHash = transactionHash;
+    purchase.contractDetails.contractAddress = contractAddress;
+    await purchase.save();
+
+    res.json({ message: "Deployment" });
+  } catch (err) {
+    console.error("Error while deployment:", err);
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
+};
+
+exports.initializeContract = async (req, res) => {
   const purchaseId = req.params.purchaseId;
   const { transactionHash } = req.body;
 
@@ -46,12 +69,33 @@ exports.setTransactionHash = async (req, res) => {
     const purchase = await Purchase.findById(purchaseId);
     if (!purchase) return res.status(404).send("No purchase found");
 
-    purchase.transactionHash = transactionHash;
+    purchase.contractDetails.init.transactionHash = transactionHash;
     await purchase.save();
 
-    res.json({ message: "Transaction hash saved" });
+    res.json({ message: "Initalize" });
   } catch (err) {
-    console.error("Error while saving transaction hash:", err);
+    console.error("Error while initalize:", err);
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
+};
+
+exports.sellContract = async (req, res) => {
+  const purchaseId = req.params.purchaseId;
+  const { transactionHash } = req.body;
+
+  try {
+    const purchase = await Purchase.findById(purchaseId);
+    if (!purchase) return res.status(404).send("No purchase found");
+
+    purchase.contractDetails.sell.transactionHash = transactionHash;
+    await purchase.save();
+
+    res.json({ message: "Sell completed" });
+  } catch (err) {
+    console.error("Error while sell:", err);
     if (!error.statusCode) {
       error.statusCode = 500;
     }

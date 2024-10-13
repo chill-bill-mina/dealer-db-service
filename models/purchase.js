@@ -13,6 +13,24 @@ const purchaseSchema = new Schema({
   invoiceNumber: { type: String },
   transactionHash: { type: String },
   isDeployed: { type: Boolean, default: false },
+  contractDetails: {
+    contractAddress: { type: String },
+
+    deploy: {
+      transactionHash: { type: String },
+      isDeployed: { type: Boolean, default: false },
+    },
+
+    init: {
+      transactionHash: { type: String },
+      isInitialized: { type: Boolean, default: false },
+    },
+
+    sell: {
+      transactionHash: { type: String },
+      isSold: { type: Boolean, default: false },
+    },
+  },
 });
 
 module.exports = mongoose.model("Purchase", purchaseSchema);

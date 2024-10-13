@@ -14,6 +14,10 @@ router.post(
   purchaseController.approvePurchase
 );
 
-router.post("/transaction/:purchaseId", purchaseController.setTransactionHash);
+router.post("/deploy/:purchaseId", purchaseController.setDeployment);
+
+router.post("/initialize/:purchaseId", purchaseController.initializeContract);
+
+router.post("/sell/:purchaseId", purchaseController.sellContract);
 
 module.exports = router;

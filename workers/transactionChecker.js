@@ -41,22 +41,61 @@ async function processPurchases() {
     console.log(purchases);
 
     for (const purchase of purchases) {
-      if (purchase.transactionHash) {
-        const status = await checkTransactionStatus(purchase.transactionHash);
-
+      if (
+        purchase.contractDetails.deploy.transactionHash &&
+        !purchase.contractDetails.deploy.isDeployed
+      ) {
+        const status = await checkTransactionStatus(
+          purchase.contractDetails.deploy.transactionHash
+        );
         if (status === "INCLUDED") {
           // Update the purchase to mark it as deployed
-          purchase.isDeployed = true;
-          purchase.status = "completed"; // İşlem tamamlandığında durumu da güncelleyebilirsiniz
+          purchase.contractDetails.deploy.isDeployed = true;
           await purchase.save();
           logger.info(`Purchase ${purchase._id} marked as deployed.`);
         } else {
           logger.info(
-            `Transaction ${purchase.transactionHash} is still ${status}`
+            `Transaction ${purchase.contractDetails.deploy.transactionHash} is still ${status}`
           );
         }
-      } else {
-        logger.warn(`Purchase ${purchase._id} has no transaction hash.`);
+      }
+      if (
+        purchase.contractDetails.init.transactionHash &&
+        !purchase.contractDetails.init.isInitialized
+      ) {
+        const status = await checkTransactionStatus(
+          purchase.contractDetails.init.transactionHash
+        );
+        if (status === "INCLUDED") {
+          // Update the purchase to mark it as deployed
+          purchase.contractDetails.init.isInitialized = true;
+          await purchase.save();
+          logger.info(`Purchase ${purchase._id} marked as initialized.`);
+        } else {
+          logger.info(
+            `Transaction ${purchase.contractDetails.init.transactionHash} is still ${status}`
+          );
+        }
+      }
+
+      if (
+        purchase.contractDetails.sell.transactionHash &&
+        !purchase.contractDetails.sell.isSold
+      ) {
+        const status = await checkTransactionStatus(
+          purchase.contractDetails.sell.transactionHash
+        );
+        if (status === "INCLUDED") {
+          // Update the purchase to mark it as deployed
+          purchase.contractDetails.sell.isSold = true;
+          purchase.status = "completed";
+          await purchase.save();
+          logger.info(`Purchase ${purchase._id} marked as sold.`);
+        } else {
+          logger.info(
+            `Transaction ${purchase.contractDetails.sell.transactionHash} is still ${status}`
+          );
+        }
       }
     }
   } catch (error) {
