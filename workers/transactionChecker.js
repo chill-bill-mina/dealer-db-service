@@ -36,7 +36,6 @@ async function processPurchases() {
     // Find all purchases with pending status and false isDeployed
     const purchases = await Purchase.find({
       status: "pending",
-      isDeployed: false,
     });
     console.log(purchases);
 
