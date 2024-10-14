@@ -5,5 +5,7 @@ module.exports = {
   server: {
     port: process.env.PORT,
   },
-  
+  mina_api: {
+    key: process.env.MINA_API_KEY,
+  },
 };

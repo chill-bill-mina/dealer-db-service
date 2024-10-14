@@ -9,7 +9,7 @@ const transactionChecker = new Worker(
 );
 
 // Cron job her 10 saniyede bir çalışacak şekilde ayarlanıyor
-const task = cron.schedule("*/10 * * * * *", async () => {
+const task = cron.schedule("*/90 * * * * *", async () => {
   logger.info("Scheduled task started");
   transactionChecker.postMessage(0); // Worker thread'e mesaj gönderiliyor
 });
