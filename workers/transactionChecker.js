@@ -46,6 +46,12 @@ async function processPurchases() {
           purchase.contractDetails.deploy.isDeployed = true;
           await purchase.save();
           logger.info(`Purchase ${purchase._id} marked as deployed.`);
+        } else if (status === "failed") {
+          // Update the purchase to mark it as failed
+          purchase.contractDetails.deploy.isDeployed = false;
+          purchase.contractDetails.deploy.transactionHash = "";
+          await purchase.save();
+          logger.info(`Purchase ${purchase._id} marked as failed.`);
         } else {
           logger.info(
             `Transaction ${purchase.contractDetails.deploy.transactionHash} is still ${status}`
@@ -64,6 +70,12 @@ async function processPurchases() {
           purchase.contractDetails.init.isInitialized = true;
           await purchase.save();
           logger.info(`Purchase ${purchase._id} marked as initialized.`);
+        } else if (status === "failed") {
+          // Update the purchase to mark it as failed
+          purchase.contractDetails.init.isInitialized = false;
+          purchase.contractDetails.init.transactionHash = "";
+          await purchase.save();
+          logger.info(`Purchase ${purchase._id} marked as failed.`);
         } else {
           logger.info(
             `Transaction ${purchase.contractDetails.init.transactionHash} is still ${status}`
@@ -84,6 +96,12 @@ async function processPurchases() {
           purchase.status = "completed";
           await purchase.save();
           logger.info(`Purchase ${purchase._id} marked as sold.`);
+        } else if (status === "failed") {
+          // Update the purchase to mark it as failed
+          purchase.contractDetails.sell.isSold = false;
+          purchase.contractDetails.sell.transactionHash = "";
+          await purchase.save();
+          logger.info(`Purchase ${purchase._id} marked as failed.`);
         } else {
           logger.info(
             `Transaction ${purchase.contractDetails.sell.transactionHash} is still ${status}`
