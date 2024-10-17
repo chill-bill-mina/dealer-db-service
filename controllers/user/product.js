@@ -11,6 +11,8 @@ exports.getMyProducts = async (req, res) => {
       product: purchase.product,
       status: purchase.status,
       quantity: purchase.quantity,
+      contractAddress: purchase.contractDetails.contractAddress,
+      purchaseId: purchase._id,
     }));
 
     res.json(result);
